@@ -3,6 +3,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+// TODO: Add bootstrap styling and implement a DEMO login button
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

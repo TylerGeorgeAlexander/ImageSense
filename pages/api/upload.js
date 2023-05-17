@@ -25,7 +25,8 @@ export const config = {
     bodyParser: false,
   },
 };
-
+// TODO: upload images URL from cloudinary into a unique array defined by the user
+// See models/User.js   imageUrls: [String],
 export default function handler(req, res) {
   if (req.method === "POST") {
     upload(req, res, function (err) {

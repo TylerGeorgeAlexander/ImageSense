@@ -4,6 +4,7 @@ import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
+// TODO: Chore - clean up cookies, nookies, and other deps
 import nookies from "nookies";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 
@@ -53,7 +54,10 @@ export default function Home() {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("🚀 ~ file: index.js:56 ~ uploadImage ~ response:", response)
+        console.log(
+          "🚀 ~ file: index.js:56 ~ uploadImage ~ response:",
+          response
+        );
         // response.data.imageUrl is the image URL returned from the server
         setImageURL(response.data.imageUrl);
       } catch (error) {
@@ -72,7 +76,7 @@ export default function Home() {
     setImageURL(e.target.value);
     setResults([]);
   };
-
+// TODO: clean up and analyze unused function
   const triggerUpload = () => {
     fileInputRef.current.click();
   };
