@@ -3,11 +3,6 @@ import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/router";
-// TODO: Chore - clean up cookies, nookies, and other deps
-import nookies from "nookies";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import Cookies from "js-cookie"; // import js-cookie
 
 export default function Home() {
   const router = useRouter();
@@ -103,107 +98,95 @@ export default function Home() {
   }
 
   return (
-    <>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#">ImageSense</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Nav.Link onClick={logout}>Logout</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <div className="container py-5">
+      <h1 className="text-center visually-hidden">ImageSense</h1>
 
-      <div className="container py-5">
-        <h1 className="text-center visually-hidden">ImageSense</h1>
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <div className="text-center mb-3">
-              <Image
-                src="/ImageSense-logos/ImageSense-logos_black.png"
-                alt="ImageSense Logo"
-                className="img-fluid"
-                width={500}
-                height={300}
-                priority
-              />
-            </div>
-            <div className="text-center">
-              <input
-                type="file"
-                accept="image/*"
-                capture="camera"
-                className="form-control"
-                onChange={uploadImage}
-                ref={fileInputRef}
-              />
-            </div>
-            <div className="text-center">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Paste image URL"
-                ref={textInputRef}
-                onChange={handleOnChange}
-              />
-            </div>
-            <div className="text-center mt-3">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="text-center mb-3">
+            <Image
+              src="/ImageSense-logos/ImageSense-logos_black.png"
+              alt="ImageSense Logo"
+              className="img-fluid"
+              width={500}
+              height={300}
+            />
+          </div>
+          <div className="text-center">
+            <input
+              type="file"
+              accept="image/*"
+              capture="camera"
+              className="form-control"
+              onChange={uploadImage}
+              ref={fileInputRef}
+            />
+          </div>
+          <div className="text-center">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Paste image URL"
+              ref={textInputRef}
+              onChange={handleOnChange}
+            />
+          </div>
+          <div className="text-center mt-3">
+            {imageURL && (
+              <button className="btn btn-success" onClick={identify}>
+                Identify Image
+              </button>
+            )}
+          </div>
+          <div className="text-center mt-4">
+            <div className="imageHolder">
               {imageURL && (
-                <button className="btn btn-success" onClick={identify}>
-                  Identify Image
-                </button>
+                <img
+                  src={imageURL}
+                  alt="Upload Preview"
+                  crossOrigin="anonymous"
+                  ref={imageRef}
+                  className="img-fluid rounded shadow mb-3"
+                />
               )}
             </div>
-            <div className="text-center mt-4">
-              <div className="imageHolder">
-                {imageURL && (
-                  <img
-                    src={imageURL}
-                    alt="Upload Preview"
-                    crossOrigin="anonymous"
-                    ref={imageRef}
-                    className="img-fluid rounded shadow mb-3"
-                  />
-                )}
-              </div>
-              <div className="resultsHolder">
-                {results.length > 0 &&
-                  results.map((result, index) => (
-                    <div
-                      className="alert alert-success"
-                      role="alert"
-                      key={result.className}
-                    >
-                      <h4 className="alert-heading">{result.className}</h4>
-                      <p>
-                        Confidence level:{" "}
-                        <span className="font-weight-bold">
-                          {(result.probability * 100).toFixed(2)}%
+            <div className="resultsHolder">
+              {results.length > 0 &&
+                results.map((result, index) => (
+                  <div
+                    className="alert alert-success"
+                    role="alert"
+                    key={result.className}
+                  >
+                    <h4 className="alert-heading">{result.className}</h4>
+                    <p>
+                      Confidence level:{" "}
+                      <span className="font-weight-bold">
+                        {(result.probability * 100).toFixed(2)}%
+                      </span>
+                      {index === 0 && (
+                        <span className="text-muted small ml-2">
+                          (Best Guess)
                         </span>
-                        {index === 0 && (
-                          <span className="text-muted small ml-2">
-                            (Best Guess)
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-            <div className="text-center mt-4">
-              <h2 className="mb-3">Search History</h2>
-              <div className="row justify-content-center">
-                {history.map((image, index) => (
-                  <div className="col-6 col-md-4 mb-4" key={`${image}${index}`}>
-                    <img
-                      src={image}
-                      alt="Recent Prediction"
-                      className="img-fluid rounded shadow"
-                      onClick={() => setImageURL(image)}
-                    />
+                      )}
+                    </p>
                   </div>
                 ))}
-              </div>
+            </div>
+          </div>
+          <div className="text-center mt-4">
+            <h2 className="mb-3">Search History</h2>
+            <div className="row justify-content-center">
+              {history.map((image, index) => (
+                <div className="col-6 col-md-4 mb-4" key={`${image}${index}`}>
+                  <img
+                    src={image}
+                    alt="Recent Prediction"
+                    className="img-fluid rounded shadow"
+                    onClick={() => setImageURL(image)}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
