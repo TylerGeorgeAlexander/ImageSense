@@ -1,9 +1,7 @@
 // pages/api/upload.js
-import nextConnect from "next-connect";
-import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
 import cloudinary from "cloudinary";
-import User from "../../models/User";
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,25 +9,34 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const cloudinaryStorage = new CloudinaryStorage({
   cloudinary: cloudinary.v2,
   params: {
-    folder: "your_folder_name",
+    folder: "ImageSense",
+    format: async (req, file) => "png", // supports promises as well
+    public_id: (req, file) => file.fieldname + "-" + Date.now(),
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: cloudinaryStorage }).single("image");
 
-export default nextConnect()
-  .use(upload.single("image"))
-  .post(async (req, res) => {
-    try {
-      // Add the Cloudinary URL to the user's imageUrls array
-      const user = await User.findById(req.user.id);
-      user.imageUrls.push(req.file.path);
-      await user.save();
-      res.status(200).json({ success: true, imageUrl: req.file.path });
-    } catch (err) {
-      res.status(500).json({ success: false, message: err.message });
-    }
-  });
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export default function handler(req, res) {
+  if (req.method === "POST") {
+    upload(req, res, function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      // This will be the url of the uploaded image on cloudinary
+      const imageUrl = req.file.path;
+      return res.status(200).json({ imageUrl });
+    });
+  } else {
+    res.status(405).send("Method Not Allowed");
+  }
+}
