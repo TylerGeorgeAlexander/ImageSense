@@ -53,7 +53,7 @@ export default function Home() {
             "Content-Type": "multipart/form-data",
           },
         });
-
+        console.log("🚀 ~ file: index.js:56 ~ uploadImage ~ response:", response)
         // response.data.imageUrl is the image URL returned from the server
         setImageURL(response.data.imageUrl);
       } catch (error) {
@@ -93,7 +93,6 @@ export default function Home() {
     // Redirect to login
     router.replace("/login");
   };
-  
 
   if (isModelLoading) {
     return <h2>Model Loading...</h2>;
