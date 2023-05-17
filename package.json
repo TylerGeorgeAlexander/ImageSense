@@ -5,6 +5,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": ">=12.13"
+  },
   "dependencies": {
     "@tensorflow-models/mobilenet": "2.1.0",
     "@tensorflow/tfjs": "4.5.0",
