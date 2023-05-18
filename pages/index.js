@@ -34,6 +34,7 @@ export default function Home() {
     try {
       await tf.ready();
       const model = await mobilenet.load();
+      console.log("🚀 ~ file: index.js:37 ~ loadModel ~ model:", model)
       setModel(model);
       setIsModelLoading(false);
     } catch (error) {
