@@ -34,7 +34,6 @@ export default function Home() {
     try {
       await tf.ready();
       const model = await mobilenet.load();
-      console.log("🚀 ~ file: index.js:37 ~ loadModel ~ model:", model)
       setModel(model);
       setIsModelLoading(false);
     } catch (error) {
@@ -55,10 +54,6 @@ export default function Home() {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(
-          "🚀 ~ file: index.js:56 ~ uploadImage ~ response:",
-          response
-        );
         // response.data.imageUrl is the image URL returned from the server
         setImageURL(response.data.imageUrl);
       } catch (error) {
@@ -77,7 +72,7 @@ export default function Home() {
     setImageURL(e.target.value);
     setResults([]);
   };
-// TODO: clean up and analyze unused function
+  // TODO: clean up and analyze unused function
   const triggerUpload = () => {
     fileInputRef.current.click();
   };
