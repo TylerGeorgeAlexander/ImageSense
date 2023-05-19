@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function Login() {
     try {
       const response = await axios.post("/api/login", { email, password });
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
+        Cookies.set("token", response.data.token);
         router.push("/");
       } else {
         setError(response.data.message);
@@ -29,15 +30,15 @@ export default function Login() {
   const handleDemoLogin = async () => {
     const demoEmail = "demo@example.com";
     const demoPassword = "demopassword";
-  
+
     try {
       const response = await axios.post("/api/login", {
         email: demoEmail,
         password: demoPassword,
       });
-  
+
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
+        Cookies.set("token", response.data.token);
         router.push("/");
       } else {
         setError(response.data.message);
@@ -46,8 +47,6 @@ export default function Login() {
       setError(err.message);
     }
   };
-  
-  
 
   return (
     <Container className="mt-5">
