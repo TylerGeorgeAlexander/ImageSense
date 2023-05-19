@@ -27,16 +27,27 @@ export default function Login() {
   };
 
   const handleDemoLogin = async () => {
-    // Example demo login logic
     const demoEmail = "demo@example.com";
     const demoPassword = "demopassword";
-
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-
-    // Simulate form submission
-    handleLogin(new Event("submit"));
+  
+    try {
+      const response = await axios.post("/api/login", {
+        email: demoEmail,
+        password: demoPassword,
+      });
+  
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        router.push("/");
+      } else {
+        setError(response.data.message);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
+  
+  
 
   return (
     <Container className="mt-5">
