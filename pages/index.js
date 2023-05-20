@@ -7,15 +7,18 @@ import { useRouter } from "next/router";
 // TODO: Chore - clean up cookies, nookies, and other deps
 import nookies from "nookies";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import Cookies from 'js-cookie'; // import js-cookie
+import Cookies from "js-cookie"; // import js-cookie
 
 export default function Home() {
   const router = useRouter();
 
   // Use useEffect to redirect to login in the client side
   useEffect(() => {
-    const token = Cookies.get("token"); // replaced localStorage with Cookies
+    const token = Cookies.get("token");
     if (!token) {
+      // Clear token from cookies
+      Cookies.remove("token");
+      // Redirect to login page
       router.replace("/login");
     }
   }, []);
@@ -90,8 +93,8 @@ export default function Home() {
 
   const logout = () => {
     // Remove token from cookies
-    Cookies.remove("token"); // replaced localStorage with Cookies
-    // Redirect to login
+    Cookies.remove("token");
+    // Redirect to login page
     router.replace("/login");
   };
 
