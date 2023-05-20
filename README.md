@@ -3,6 +3,16 @@
 ### Description
 
 ImageSense is a web application that allows you to perform image classification using the TensorFlow.js library. The application is built with Next.js and provides an intuitive user interface for uploading and classifying images.
+
+#### Screenshot of the app in action
+<!-- ![Screenshot of ImageSense](/public/ImageSenseDemo.png) -->
+<p align="center">
+  <img src="./public/ImageSenseDemo.png" alt="Alt Text" style="max-width: 100%; height: 300px;" />
+</p>
+
+#### Check out the live app:
+[ImageSense](https://image-sense.herokuapp.com/)
+
 ### Installation
 
 To install and run the application, follow these steps:
