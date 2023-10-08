@@ -5,19 +5,6 @@ import axios from "axios";
 import Image from "next/image";
 
 export default function Home() {
-  const router = useRouter();
-
-  // Use useEffect to redirect to login in the client side
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (!token) {
-      // Clear token from cookies
-      Cookies.remove("token");
-      // Redirect to login page
-      router.replace("/login");
-    }
-  }, []);
-
   const [isModelLoading, setIsModelLoading] = useState(false);
   const [model, setModel] = useState(null);
   const [imageURL, setImageURL] = useState(null);
@@ -53,6 +40,7 @@ export default function Home() {
             "Content-Type": "multipart/form-data",
           },
         });
+
         // response.data.imageUrl is the image URL returned from the server
         setImageURL(response.data.imageUrl);
       } catch (error) {
@@ -71,7 +59,7 @@ export default function Home() {
     setImageURL(e.target.value);
     setResults([]);
   };
-  // TODO: clean up and analyze unused function
+
   const triggerUpload = () => {
     fileInputRef.current.click();
   };
@@ -85,13 +73,6 @@ export default function Home() {
       setHistory([imageURL, ...history]);
     }
   }, [imageURL]);
-
-  const logout = () => {
-    // Remove token from cookies
-    Cookies.remove("token");
-    // Redirect to login page
-    router.replace("/login");
-  };
 
   if (isModelLoading) {
     return <h2>Model Loading...</h2>;
@@ -191,6 +172,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
