@@ -9,7 +9,7 @@ export default function Home() {
   const [model, setModel] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const [results, setResults] = useState([]);
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState(new Set());
 
   const imageRef = useRef();
   const textInputRef = useRef();
@@ -70,9 +70,12 @@ export default function Home() {
 
   useEffect(() => {
     if (imageURL) {
-      setHistory([imageURL, ...history]);
+      setHistory((prevHistory) => new Set([imageURL, ...prevHistory]));
     }
   }, [imageURL]);
+
+  // Convert the Set to an array before rendering in the component
+  const historyArray = [...history];
 
   if (isModelLoading) {
     return <h2>Model Loading...</h2>;
@@ -158,7 +161,7 @@ export default function Home() {
           <div className="text-center mt-4">
             <h2 className="mb-3">Search History</h2>
             <div className="row justify-content-center">
-              {history.map((image, index) => (
+              {historyArray && historyArray.map((image, index) => (
                 <div className="col-6 col-md-4 mb-4" key={`${image}${index}`}>
                   <img
                     src={image}
