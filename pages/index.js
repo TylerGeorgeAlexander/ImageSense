@@ -101,11 +101,18 @@ export default function Home() {
             <input
               type="file"
               accept="image/*"
-              capture="camera"
+              // capture="camera"
               className="form-control"
               onChange={uploadImage}
               ref={fileInputRef}
+              style={{ display: "none" }} // Hide the original file input
             />
+            <button
+              className="btn btn-primary m-2"
+              onClick={triggerUpload}
+            >
+              Upload Image
+            </button>
           </div>
           <div className="text-center">
             <input
