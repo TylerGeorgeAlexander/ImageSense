@@ -42,9 +42,20 @@ Once the installation is complete, you can start the application by running the 
 npm run dev
 ```
 This command starts the development server and opens the application in your default web browser. You can then access the application at http://localhost:3000.
+
 ### Configuration
 
-By default, the application uses a pre-trained model for image classification. However, if you want to use a different model or customize the settings, you can modify the configuration file located at src/config.js. In this file, you can update the model URL, input size, and other parameters according to your requirements.
+By default, the application uses a pre-trained model for image classification. 
+
+Be sure to set up a .env.local for local test environments using the .env.example
+```
+MONGODB_URI=your_mongodb_uri_here
+
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name_here
+CLOUDINARY_API_KEY=your_cloudinary_api_key_here
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret_here
+```
+
 ### Contributing
 
 If you'd like to contribute to this project, please follow these guidelines:
@@ -55,12 +66,15 @@ If you'd like to contribute to this project, please follow these guidelines:
     Submit a pull request to the main repository.
 
 Please ensure your code adheres to the project's coding conventions and includes appropriate tests.
+
 ### License
 
 This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.
-Acknowledgments
+
+### Acknowledgments
 
 We would like to acknowledge the TensorFlow.js library and the Next.js community for their valuable contributions to the project.
+
 ### Contact
 
 If you have any questions, suggestions, or issues, please contact us at TylerGeorgeAlexander.dev@gmail.com.
