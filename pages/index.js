@@ -33,8 +33,16 @@ export default function Home() {
     if (files.length > 0) {
       const formData = new FormData();
       formData.append("image", files[0]);
+
+      // Check if the uploaded file has a valid image extension using regex
+      const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
+      if (!validImageExtensions.test(files[0].name)) {
+        alert("Invalid image file. Please upload a valid image. Supported formats: jpg, jpeg, png, gif");
+        return;
+      }
+
       // Clear Identify Results when uploading a new image
-      setResults([])
+      setResults([]);
       try {
         const response = await axios.post("/api/upload", formData, {
           headers: {
@@ -49,6 +57,7 @@ export default function Home() {
       }
     }
   };
+
 
   const identify = async () => {
     textInputRef.current.value = "";
@@ -114,7 +123,11 @@ export default function Home() {
               Upload Image
             </button>
           </div>
-          <div className="text-center">
+          {/* TODO: allow input for pasting image URL
+          - check file extension
+          - allow only valid images to add to search history
+           */}
+          {/* <div className="text-center">
             <input
               type="text"
               className="form-control"
@@ -122,7 +135,7 @@ export default function Home() {
               ref={textInputRef}
               onChange={handleOnChange}
             />
-          </div>
+          </div> */}
           <div className="text-center mt-3">
             {imageURL && (
               <button className="btn btn-success" onClick={identify}>
