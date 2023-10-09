@@ -33,7 +33,8 @@ export default function Home() {
     if (files.length > 0) {
       const formData = new FormData();
       formData.append("image", files[0]);
-
+      // results clear
+      setResults([])
       try {
         const response = await axios.post("/api/upload", formData, {
           headers: {
