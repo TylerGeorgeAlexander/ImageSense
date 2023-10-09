@@ -168,7 +168,11 @@ export default function Home() {
                     src={image}
                     alt="Recent Prediction"
                     className="img-fluid rounded shadow"
-                    onClick={() => setImageURL(image)}
+                    onClick={() => {
+                      // Clear Identify Results when selecting a new image from the search history
+                      setResults([])
+                      setImageURL(image)
+                    }}
                   />
                 </div>
               ))}
