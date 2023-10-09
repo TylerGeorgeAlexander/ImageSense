@@ -7,6 +7,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <link rel="icon" href="/ImageSense-logos/ImageSense-icon.png" />
+        <title>ImageSense</title>
       </Head>
       <Component {...pageProps} />
     </>
