@@ -3,6 +3,7 @@ import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
 import Image from "next/image";
+import { URL } from "url-parse";
 
 export default function Home() {
   const [isModelLoading, setIsModelLoading] = useState(false);
@@ -11,6 +12,7 @@ export default function Home() {
   const [results, setResults] = useState([]);
   const [history, setHistory] = useState(new Set());
 
+  const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
   const imageRef = useRef();
   const textInputRef = useRef();
   const fileInputRef = useRef();
@@ -35,7 +37,6 @@ export default function Home() {
       formData.append("image", files[0]);
 
       // Check if the uploaded file has a valid image extension using regex
-      const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
       if (!validImageExtensions.test(files[0].name)) {
         alert("Invalid image file. Please upload a valid image. Supported formats: jpg, jpeg, png, gif");
         return;
@@ -65,9 +66,27 @@ export default function Home() {
     setResults(results);
   };
 
-  const handleOnChange = (e) => {
-    setImageURL(e.target.value);
-    setResults([]);
+  const handleOnChange = async (e) => {
+    const url = e.target.value;
+  
+    try {
+      // Request the image through your proxy API route
+      const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+  
+      if (!response.ok) {
+        // Handle the error here (e.g., show an error message)
+        alert('Failed to fetch the image. Please enter a valid image URL.');
+        return;
+      }
+  
+      // If the response is successful, set the imageURL state
+      setImageURL(proxyUrl);
+      setResults([]);
+    } catch (error) {
+      console.error('Error handling image URL:', error);
+      alert('An error occurred while processing the image URL.');
+    }
   };
 
   const triggerUpload = () => {
@@ -79,6 +98,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log(history)
     if (imageURL) {
       setHistory((prevHistory) => new Set([imageURL, ...prevHistory]));
     }
@@ -127,7 +147,7 @@ export default function Home() {
           - check file extension
           - allow only valid images to add to search history
            */}
-          {/* <div className="text-center">
+          <div className="text-center">
             <input
               type="text"
               className="form-control"
@@ -135,7 +155,7 @@ export default function Home() {
               ref={textInputRef}
               onChange={handleOnChange}
             />
-          </div> */}
+          </div>
           <div className="text-center mt-3">
             {imageURL && (
               <button className="btn btn-success" onClick={identify}>
