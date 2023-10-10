@@ -102,7 +102,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log(history)
     if (imageURL) {
       setHistory((prevHistory) => new Set([imageURL, ...prevHistory]));
     }
