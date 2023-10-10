@@ -3,7 +3,6 @@ import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
 import Image from "next/image";
-import { URL } from "url-parse";
 
 export default function Home() {
   const [isModelLoading, setIsModelLoading] = useState(false);
@@ -11,6 +10,7 @@ export default function Home() {
   const [imageURL, setImageURL] = useState(null);
   const [results, setResults] = useState([]);
   const [history, setHistory] = useState(new Set());
+  const [isUploading, setIsUploading] = useState(false); // Add isUploading state
 
   const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
   const imageRef = useRef();
@@ -37,6 +37,7 @@ export default function Home() {
       formData.append("image", files[0]);
 
       // Check if the uploaded file has a valid image extension using regex
+      const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
       if (!validImageExtensions.test(files[0].name)) {
         alert("Invalid image file. Please upload a valid image. Supported formats: jpg, jpeg, png, gif");
         return;
@@ -44,6 +45,7 @@ export default function Home() {
 
       // Clear Identify Results when uploading a new image
       setResults([]);
+      setIsUploading(true); // Set isUploading to true when starting the upload
       try {
         const response = await axios.post("/api/upload", formData, {
           headers: {
@@ -55,6 +57,8 @@ export default function Home() {
         setImageURL(response.data.imageUrl);
       } catch (error) {
         console.error("Error uploading image: ", error);
+      } finally {
+        setIsUploading(false); // Set isUploading back to false when upload completes (whether successful or not)
       }
     }
   };
@@ -68,18 +72,18 @@ export default function Home() {
 
   const handleOnChange = async (e) => {
     const url = e.target.value;
-  
+
     try {
       // Request the image through your proxy API route
       const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`;
       const response = await fetch(proxyUrl);
-  
+
       if (!response.ok) {
         // Handle the error here (e.g., show an error message)
         alert('Failed to fetch the image. Please enter a valid image URL.');
         return;
       }
-  
+
       // If the response is successful, set the imageURL state
       setImageURL(proxyUrl);
       setResults([]);
@@ -157,10 +161,15 @@ export default function Home() {
             />
           </div>
           <div className="text-center mt-3">
-            {imageURL && (
+            {/* Conditionally render a spinner or the "Identify Image" button */}
+            {isUploading ? (
+              <div className="spinner-border text-success" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (imageURL && (
               <button className="btn btn-success" onClick={identify}>
                 Identify Image
-              </button>
+              </button>)
             )}
           </div>
           <div className="text-center mt-4">
