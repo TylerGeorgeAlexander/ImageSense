@@ -12,7 +12,6 @@ export default function Home() {
   const [history, setHistory] = useState(new Set());
   const [isUploading, setIsUploading] = useState(false); // Add isUploading state
 
-  const validImageExtensions = /\.(jpg|jpeg|png|gif)$/i; // Add more extensions as needed
   const imageRef = useRef();
   const textInputRef = useRef();
   const fileInputRef = useRef();
@@ -146,10 +145,6 @@ export default function Home() {
               Upload Image
             </button>
           </div>
-          {/* TODO: allow input for pasting image URL
-          - check file extension
-          - allow only valid images to add to search history
-           */}
           <div className="text-center">
             <input
               type="text"
